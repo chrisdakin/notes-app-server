@@ -12,6 +12,8 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 8080;
 
+app.use(cors());
+
 app.use(bodyParser.json());
 
 const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'), (err) => {
