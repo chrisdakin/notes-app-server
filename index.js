@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 8080;
 
-app.use(cors());
+app.use(cors({ origin: true }));
 
 app.use(bodyParser.json());
 
