@@ -1,5 +1,7 @@
 CREATE TABLE IF NOT EXISTS notes (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
-  text TEXT
+  text TEXT,
+  createdAt TEXT,
+  updatedAt TEXT
 );
