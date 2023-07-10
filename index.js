@@ -154,6 +154,10 @@ app.delete('/api/notes/:id', async (req, res) => {
 	db.close();
 });
 
+app.get('*', (req, res) => {
+	res.sendFile(join(__dirname + '/client/build/index.html'));
+});
+
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
 });
