@@ -2,16 +2,19 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
+import cors from 'cors';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import cors from 'cors';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-app.use(cors());
 const port = process.env.PORT || 4000;
+
+if (process.env.NODE_ENV !== 'production') {
+	app.use(cors());
+}
 
 app.use(express.static(join(__dirname, 'notes-app-client/build')));
 app.use(bodyParser.json());
@@ -86,6 +89,7 @@ app.get('/api/notes/:userId', async (req, res) => {
 	const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'));
 	const userId = req.params.userId;
 	const { notes, error } = await getAllNotes(db, userId);
+
 	db.close();
 
 	if (error) {
