@@ -32,20 +32,24 @@ const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'), (error) => {
 	}
 });
 
-const getAllNotes = (db) => {
+const getAllNotes = (db, userId) => {
 	return new Promise((res) => {
-		db.all('SELECT * FROM notes ORDER BY updatedAt DESC', (error, notes) => {
-			res({ notes, error });
-		});
+		db.all(
+			'SELECT * FROM notes WHERE userId = ? ORDER BY updatedAt DESC',
+			[userId],
+			(error, notes) => {
+				res({ notes, error });
+			}
+		);
 	});
 };
 
-const addNote = (db) =>
+const addNote = (db, userId) =>
 	new Promise((res) => {
 		const date = new Date().toISOString();
 		db.run(
-			'INSERT INTO notes (title, text, createdAt, updatedAt) VALUES (?, ?, ?, ?)',
-			['New Note', '', date, date],
+			'INSERT INTO notes (title, text, createdAt, updatedAt, userId) VALUES (?, ?, ?, ?, ?)',
+			['New Note', '', date, date, userId],
 			function (error) {
 				res({ error, id: this.lastID });
 			}
@@ -61,12 +65,12 @@ const deleteNote = (db, noteId) =>
 
 app.post('/api/notes', async (req, res) => {
 	const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'));
-	const addedNote = await addNote(db);
+	const addedNote = await addNote(db, req.body.userId);
 
 	if (addedNote.error) {
 		res.status(500).send({ error: error });
 	} else {
-		const { notes, error } = await getAllNotes(db);
+		const { notes, error } = await getAllNotes(db, req.body.userId);
 
 		if (error) {
 			console.error(error);
@@ -78,9 +82,10 @@ app.post('/api/notes', async (req, res) => {
 	db.close();
 });
 
-app.get('/api/notes', async (req, res) => {
+app.get('/api/notes/:userId', async (req, res) => {
 	const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'));
-	const { notes, error } = await getAllNotes(db);
+	const userId = req.params.userId;
+	const { notes, error } = await getAllNotes(db, userId);
 	db.close();
 
 	if (error) {
@@ -120,7 +125,7 @@ app.delete('/api/notes/:id', async (req, res) => {
 	if (deletedNote.error) {
 		res.status(500).send({ error: error });
 	} else {
-		const { notes, error } = await getAllNotes(db);
+		const { notes, error } = await getAllNotes(db, req.body.userId);
 
 		if (error) {
 			console.error(error);

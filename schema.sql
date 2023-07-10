@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS notes (
   title TEXT NOT NULL,
   text TEXT,
   createdAt TEXT,
-  updatedAt TEXT
+  updatedAt TEXT,
+  userId TEXT
 );
