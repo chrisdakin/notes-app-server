@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 8080;
 
-app.use(cors({ origin: 'localhost:3000' }));
+app.use(cors({ origin: 'http://3.145.30.48:3000' }));
 
 app.use((req, res, next) => {
 	res.append('Access-Control-Allow-Origin', ['*']);
