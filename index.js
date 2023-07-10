@@ -4,12 +4,14 @@ import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 5000;
+app.use(cors());
+const port = process.env.PORT || 4000;
 
 app.use(express.static(join(__dirname, 'notes-app-client/build')));
 app.use(bodyParser.json());
