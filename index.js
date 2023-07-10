@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 
-import { resolve, dirname } from 'path';
+import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +12,7 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 5000;
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(join(__dirname, 'client/build')));
 
 app.use(bodyParser.json());
 
