@@ -155,7 +155,7 @@ app.delete('/api/notes/:id', async (req, res) => {
 });
 
 app.get('*', (req, res) => {
-	res.sendFile(join(__dirname + '/client/build/index.html'));
+	res.sendFile(join(__dirname + '/notes-app-client/build/index.html'));
 });
 
 app.listen(port, () => {
