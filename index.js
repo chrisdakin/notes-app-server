@@ -15,6 +15,14 @@ const port = 8080;
 
 app.use(cors({ origin: 'localhost:3000' }));
 
+app.use((req, res, next) => {
+	res.append('Access-Control-Allow-Origin', ['*']);
+	res.append('Access-Control-Allow-Private-Network', ['*']);
+	res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	res.append('Access-Control-Allow-Headers', 'Content-Type');
+	next();
+});
+
 app.use(bodyParser.json());
 
 const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'), (error) => {
