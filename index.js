@@ -2,7 +2,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
-import cors from 'cors';
 
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -11,17 +10,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = 8080;
+const port = 5000;
 
-app.use(cors({ origin: 'http://3.145.30.48:3000' }));
-
-app.use((req, res, next) => {
-	res.append('Access-Control-Allow-Origin', ['*']);
-	res.append('Access-Control-Allow-Private-Network', ['*']);
-	res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-	res.append('Access-Control-Allow-Headers', 'Content-Type');
-	next();
-});
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use(bodyParser.json());
 
