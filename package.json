@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
-		"heroku-postbuild": "cd client && npm install && npm run build"
+		"heroku-postbuild": "git clone https://github.com/chrisdakin/notes-app-client.git && cd notes-app-client && npm install && npm run build"
 	},
 	"author": "",
 	"license": "ISC",
