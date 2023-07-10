@@ -2,7 +2,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
-
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -13,7 +12,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.static(join(__dirname, 'notes-app-client/build')));
-
 app.use(bodyParser.json());
 
 const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'), (error) => {
@@ -61,7 +59,6 @@ const deleteNote = (db, noteId) =>
 
 app.post('/api/notes', async (req, res) => {
 	const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'));
-
 	const addedNote = await addNote(db);
 
 	if (addedNote.error) {
@@ -92,28 +89,9 @@ app.get('/api/notes', async (req, res) => {
 	}
 });
 
-app.get('/api/notes/:id', (req, res) => {
-	const noteId = req.params.id;
-	const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'));
-
-	db.get('SELECT * FROM notes WHERE id = ?', [noteId], (error, row) => {
-		if (error) {
-			console.error(error);
-			res.status(500).send('Error fetching note');
-		} else if (row) {
-			res.send(row);
-		} else {
-			res.status(404).send({ error: 'Note not found' });
-		}
-	});
-
-	db.close();
-});
-
 app.put('/api/notes/:id', (req, res) => {
 	const noteId = req.params.id;
 	const updatedNote = req.body;
-
 	const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'));
 
 	db.run(
@@ -135,7 +113,6 @@ app.put('/api/notes/:id', (req, res) => {
 app.delete('/api/notes/:id', async (req, res) => {
 	const noteId = req.params.id;
 	const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'));
-
 	const deletedNote = await deleteNote(db, noteId);
 
 	if (deletedNote.error) {
