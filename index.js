@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 import cors from 'cors';
@@ -17,7 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(express.static(join(__dirname, 'notes-app-client/build')));
-app.use(bodyParser.json());
+app.use(express.json());
 
 const db = new sqlite3.Database(resolve(__dirname, 'db.sqlite'), (error) => {
 	if (error) {
